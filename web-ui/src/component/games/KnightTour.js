@@ -2,7 +2,7 @@ import React from "react";
 import {DEFAULT_HORSE_CHECKING_SIZE, DEFAULT_SUDOKU_BOARD_CELL} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 
-export default class HorseCheckingBox extends React.Component {
+export default class KnightTour extends React.Component {
     constructor(props) {
         super(props);
 

@@ -1,5 +1,13 @@
 import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
 
+const drawBoard = (ctx, size, i) => {
+    ctx.moveTo(0, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
+    ctx.lineTo((CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
+    ctx.moveTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, 0);
+    ctx.lineTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH);
+    ctx.stroke();
+}
+
 const getSudokuBoard = (ctx, size) => {
     for (let i = 0; i <= size; i++) {
         ctx.beginPath();
@@ -9,11 +17,7 @@ const getSudokuBoard = (ctx, size) => {
         } else {
             ctx.strokeStyle = "lightgrey";
         }
-        ctx.moveTo(0, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
-        ctx.lineTo((CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
-        ctx.moveTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, 0);
-        ctx.lineTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH);
-        ctx.stroke();
+        drawBoard(ctx, size, i);
     }
 }
 
@@ -23,11 +27,7 @@ const getChessBoard = (ctx, size) => {
         ctx.lineWidth = LINE_WIDTH;
         ctx.strokeStyle = 'black';
 
-        ctx.moveTo(0, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
-        ctx.lineTo((CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
-        ctx.moveTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, 0);
-        ctx.lineTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH);
-        ctx.stroke();
+        drawBoard(ctx, size, i);
     }
 }
 

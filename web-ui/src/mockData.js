@@ -8,7 +8,7 @@ export function mockGameInfo(textId) {
 }
 
 export function mockGames() {
-    return [mockGameInfo("sudoku"), mockGameInfo("horse-checking"), mockGameInfo("random-game"), mockGameInfo("test-game")]
+    return [mockGameInfo("sudoku"), mockGameInfo("knight-tour"), mockGameInfo("random-game"), mockGameInfo("test-game")]
 }
 
 export function mockTrainers() {

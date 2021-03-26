@@ -1,9 +1,5 @@
 import React from "react";
-import {
-    DEFAULT_HORSE_CHECKING_SIZE,
-    DEFAULT_SUDOKU_BOARD_CELL,
-    DEFAULT_SUDOKU_BOARD_SIZE
-} from "../../constants/BoardConstants";
+import {DEFAULT_HORSE_CHECKING_SIZE, DEFAULT_SUDOKU_BOARD_CELL} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 
 export default class HorseCheckingBox extends React.Component {

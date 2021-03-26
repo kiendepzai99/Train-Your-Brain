@@ -1,6 +1,7 @@
 import {Container, Row, Col} from "react-bootstrap";
 import ShowRoom from "./ShowRoom";
 import PageInfo from "./PageInfo";
+import React from "react";
 
 export default function Home() {
     return (

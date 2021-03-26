@@ -1,4 +1,5 @@
 import {Card} from "react-bootstrap";
+import React from "react";
 
 function GameBox(props) {
     const gameInfo = props.gameInfo;

@@ -4,6 +4,7 @@ import {BrowserRouter} from "react-router-dom";
 import NotFound from "./component/error/NotFound";
 import SudokuBox from "./component/games/SudokuBox";
 import HorseCheckingBox from "./component/games/HorseCheckingBox";
+import React from "react";
 
 function App() {
     return (

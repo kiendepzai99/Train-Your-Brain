@@ -1,5 +1,5 @@
 import axios from "axios";
-import ApiConstants from "../constants/ApiConstant";
+import ApiConstants from "../constants/ApiConstants";
 
 const validateUser = () => axios.get(
     ApiConstants.CHECK_AUTH_URL,

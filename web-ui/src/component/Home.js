@@ -1,26 +1,17 @@
-import {useEffect, useState} from "react";
-import {mockGames} from "../mockData";
-import {Col, Container, Row} from "react-bootstrap";
-import GameBox from "./GameBox";
+import {Container, Row, Col} from "react-bootstrap";
+import ShowRoom from "./ShowRoom";
+import PageInfo from "./PageInfo";
 
 export default function Home() {
-    const [games, setGames] = useState([]);
-
-    useEffect(() => {
-        // CAll Apis
-        setGames(mockGames);
-    }, [])
-
     return (
-        <Container fluid={"md"}>
-            <Row className={"align-items-center"}>
-                {games.map(game => {
-                    return (
-                        <Col sm={6} md={5} lg={4} key={game.textId}>
-                            <GameBox gameInfo={game}/>
-                        </Col>
-                    )
-                })}
+        <Container fluid className={"vh-100 border border-danger"}>
+            <Row className={"justify-content-around"}>
+                <Col md={5} lg={4} xl={3}>
+                    <PageInfo/>
+                </Col>
+                <Col md={7} lg={8}>
+                    <ShowRoom/>
+                </Col>
             </Row>
         </Container>
     );

@@ -8,7 +8,7 @@ export default function ShowRoom() {
 
     useEffect(() => {
         // TODO: Call Apis
-        setGames(mockGames);
+        setGames(mockGames());
     }, [])
 
     return (

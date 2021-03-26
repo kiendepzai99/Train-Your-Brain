@@ -15,3 +15,7 @@ code {
 .vh-20 {
     height: 20vh;
 }
+
+.border-lg {
+    border: 5px solid;
+}

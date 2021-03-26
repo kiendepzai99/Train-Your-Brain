@@ -1,4 +1,4 @@
-import {Col, Container, PageItem, Row, Table} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import HonorTable from "./HonorTable";
 
 export default function PageInfo() {

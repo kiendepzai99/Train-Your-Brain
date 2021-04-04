@@ -1,7 +1,7 @@
-const EASY = "easy";
-const MEDIUM = "medium";
-const HARD = "hard";
-const EXPERT = "expert";
+const EASY = "Easy";
+const MEDIUM = "Medium";
+const HARD = "Hard";
+const EXPERT = "Expert";
 
 const GameLevel = {
     EASY,

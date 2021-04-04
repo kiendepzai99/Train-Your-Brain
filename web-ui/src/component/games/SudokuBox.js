@@ -3,7 +3,7 @@ import {DEFAULT_SUDOKU_BOARD_CELL, DEFAULT_SUDOKU_BOARD_SIZE} from "../../consta
 import boardFactory from "../../service/BoardFactory";
 import sudokuService from "../../service/SudokuService";
 import {mockBoardStatus} from "../../mockData";
-import Position from "../../utils/Position";
+import Point from "../../utils/Point";
 
 export default class SudokuBox extends React.Component {
     constructor(props) {
@@ -46,8 +46,8 @@ export default class SudokuBox extends React.Component {
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
 
-        const position = new Position(x, y);
-        const xy = position.getPosition();
+        const position = new Point(x, y);
+        const xy = position.toPosition();
         console.log(xy);
 
         this.setState({

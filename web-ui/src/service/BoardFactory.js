@@ -1,9 +1,9 @@
 import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
 
 const drawBoard = (ctx, size, i) => {
-    ctx.moveTo(0, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
+    ctx.moveTo(LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
     ctx.lineTo((CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH);
-    ctx.moveTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, 0);
+    ctx.moveTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, LINE_WIDTH);
     ctx.lineTo((CELL_SIZE + LINE_WIDTH) * i + LINE_WIDTH, (CELL_SIZE + LINE_WIDTH) * size + LINE_WIDTH);
     ctx.stroke();
 }

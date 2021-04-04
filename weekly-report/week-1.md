@@ -12,7 +12,7 @@
   - Knight's tour
   - Color picker (expected)
   - More games ...(expected)
-- General:
+- General features:
   - Save player's soccer
   - Race for players
   - Ranking system

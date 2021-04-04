@@ -1,5 +1,5 @@
 import {Col, Container, Row} from "react-bootstrap";
-import GameBox from "./GameBox";
+import GameBox from "./games/GameBox";
 import React, {useEffect, useState} from "react";
 import {mockGames} from "../mockData";
 

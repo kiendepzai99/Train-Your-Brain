@@ -20,6 +20,7 @@ export default class KnightTourBox extends React.Component {
             isFocus: false,
             pickingPosition: null,
             movablePositions: [],
+            movedPositions: [],
             boardStatus: null
         }
     }
@@ -35,8 +36,9 @@ export default class KnightTourBox extends React.Component {
             boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
             knightTourService.drawKnightImage(ctx, this.state.knightPosition);
             if (this.state.isFocus) {
-                knightTourService.drawMovablePositions(ctx, this.state.movablePositions)
+                knightTourService.drawMovablePositions(ctx, this.state.movablePositions);
             }
+            knightTourService.drawMovedPositions(ctx, this.state.movedPositions);
         }
     }
 
@@ -62,11 +64,14 @@ export default class KnightTourBox extends React.Component {
                     pickingPosition: []
                 })
             } else if (knightTourService.movable(this.state.knightPosition, xy)) {
+                const movedPositions = [...this.state.movedPositions];
+                movedPositions.push(this.state.knightPosition);
                 this.setState({
                     knightPosition: xy,
                     isFocus: false,
                     pickingPosition: null,
-                    movablePositions: []
+                    movablePositions: [],
+                    movedPositions: movedPositions
                 })
             }
         } else {
@@ -75,9 +80,10 @@ export default class KnightTourBox extends React.Component {
             this.setState({
                 isFocus: true,
                 pickingPosition: xy,
-                movablePositions: knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL)
+                movablePositions: knightTourService.findMovablePositions(knightPosition,
+                    DEFAULT_KNIGHT_TOUR_CELL, this.state.movedPositions)
             })
-            console.log(knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL));
+            console.log(knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL, this.state.movedPositions));
         }
     }
 

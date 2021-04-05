@@ -5,7 +5,7 @@
 - Project description: Develop game applications that help people train their brain.
 - Project team size: 2
   - Leader: Nguyễn Thế Hợp - 18001142
-  - Member: Phạm Trung Kiên - ..updating
+  - Member: Phạm Trung Kiên - 17001031
 ### Goals
 - Create list of game apps:
   - Sudoku

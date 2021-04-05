@@ -1,5 +1,5 @@
 import React from "react";
-import KnightTourBox from "./KightTourBox";
+import KnightTourBox from "./KnightTourBox";
 import GameLevel from "../../constants/GameLevel";
 import {Col, Container, Form, Row} from "react-bootstrap";
 

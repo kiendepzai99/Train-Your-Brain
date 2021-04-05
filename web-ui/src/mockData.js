@@ -1,3 +1,5 @@
+import Item from "./utils/Item";
+
 export function mockGameInfo(textId) {
     return {
         textId: textId,
@@ -37,15 +39,25 @@ export function mockTrainers() {
 }
 
 export function mockBoardStatus() {
-    return [
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9],
-        [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    const array = [
+        [0, 0, 0, 9, 0, 2, 7, 3, 8],
+        [0, 6, 0, 0, 0, 5, 0, 0, 9],
+        [8, 2, 9, 3, 0, 0, 6, 0, 1],
+        [0, 0, 1, 0, 0, 6, 0, 8, 2],
+        [0, 9, 3, 0, 1, 0, 4, 0, 5],
+        [0, 8, 0, 7, 0, 0, 9, 1, 0],
+        [9, 0, 0, 0, 0, 7, 0, 0, 0],
+        [0, 3, 8, 6, 0, 0, 5, 0, 0],
+        [0, 0, 0, 5, 0, 1, 8, 9, 4]
     ]
+
+    const result = [];
+    array.forEach(row => {
+        const rowRes = []
+        row.forEach(value => {
+            rowRes.push(new Item(value, value === 0));
+        })
+        result.push(rowRes);
+    })
+    return result;
 }

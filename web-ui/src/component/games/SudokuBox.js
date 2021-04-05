@@ -5,6 +5,7 @@ import sudokuService from "../../service/SudokuService";
 import {mockBoardStatus} from "../../mockData";
 import Point from "../../utils/Point";
 import Item from "../../utils/Item";
+import Position from "../../utils/Position";
 
 export default class SudokuBox extends React.Component {
     constructor(props) {
@@ -14,8 +15,8 @@ export default class SudokuBox extends React.Component {
 
         this.state = {
             boardStatus: null,
-            pickingPosition: null
-
+            pickingPosition: null,
+            conflictPositions: []
         }
     }
 
@@ -26,6 +27,7 @@ export default class SudokuBox extends React.Component {
         boardFactory.clearBoard(canvas);
         boardFactory.getSudokuBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
         sudokuService.drawPickingCell(ctx, this.state.pickingPosition);
+        sudokuService.drawConflict(ctx, this.state.conflictPositions);
         if (this.state.boardStatus != null) {
             sudokuService.displayBoard(ctx, this.state.boardStatus);
         }
@@ -49,9 +51,37 @@ export default class SudokuBox extends React.Component {
                     this.setState({
                         boardStatus: newBoardStatus
                     })
+
+                    this.processCheck(newBoardStatus, pickingPosition);
                 }
             }
         }
+    }
+
+    processCheck = (boardStatus, position) => {
+        const [row, col] = [position.row, position.col];
+        const currentItem = boardStatus[row][col];
+        const conflictPositions = [];
+        // Row check
+        boardStatus[row].forEach((item, i) => {
+            if (item.value === currentItem.value && currentItem.value !== 0) {
+                conflictPositions.push(new Position(row, i));
+            }
+        })
+        // Col check
+        for (let i = 0; i < boardStatus.length; i++) {
+            if (boardStatus[i][col].value === currentItem.value && currentItem.value !== 0) {
+                conflictPositions.push(new Position(i, col));
+            }
+        }
+
+        if (conflictPositions.length === 1) {
+            conflictPositions.splice(0, 1);
+        }
+
+        this.setState({
+            conflictPositions: conflictPositions
+        })
     }
 
     handleMove = (event) => {

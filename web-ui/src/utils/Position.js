@@ -9,6 +9,7 @@ export default class Position {
     }
 
     compareTo(position) {
+        if (position === null || position === undefined || !(position instanceof Position)) return false;
         return this.row === position.row && this.col === position.col;
     }
 }

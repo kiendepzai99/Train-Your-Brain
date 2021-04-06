@@ -5,17 +5,21 @@ import NotFound from "./component/error/NotFound";
 import KnightTour from "./component/games/KnightTour";
 import React from "react";
 import Sudoku from "./component/games/Sudoku";
+import {Provider} from "react-redux";
+import store from "./store";
 
 function App() {
     return (
-        <BrowserRouter>
-            <Switch>
-                <Route exact path={"/"} component={Home}/>
-                <Route exact path={"/sudoku"} component={Sudoku}/>
-                <Route exact path={"/knight-tour"} component={KnightTour}/>
-                <Route path="/" component={NotFound}/>
-            </Switch>
-        </BrowserRouter>
+        <Provider store={store}>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path={"/"} component={Home}/>
+                    <Route exact path={"/sudoku"} component={Sudoku}/>
+                    <Route exact path={"/knight-tour"} component={KnightTour}/>
+                    <Route path="/" component={NotFound}/>
+                </Switch>
+            </BrowserRouter>
+        </Provider>
     )
 }
 

@@ -1,41 +1,33 @@
 import React from "react";
 import KnightTourBox from "./KnightTourBox";
-import GameLevel from "../../constants/GameLevel";
-import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Col, Container, Row} from "react-bootstrap";
 import KnightTourPG from "./KnightTourPG";
+import {useSelector} from "react-redux";
+import LevelBox from "../LevelBox";
 
 export default function KnightTour() {
-    const [gameLevel, setGameLevel] = React.useState(GameLevel.EASY);
+    const level = useSelector(state => {
+        return state.games.KnightTour.level;
+    })
+
+    console.log(level);
 
     return (
         <Container>
             <Row>
-                <Col>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>
-                                Level
-                            </Form.Label>
-                            <Form.Control as="select">
-                                <option>{GameLevel.EASY}</option>
-                                <option>{GameLevel.MEDIUM}</option>
-                                <option>{GameLevel.HARD}</option>
-                                <option>{GameLevel.EXPERT}</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Form>
-                </Col>
+                <LevelBox/>
             </Row>
             <Row className="justify-content-around">
                 <Col>
-                    <KnightTourPG level={gameLevel}/>
+                    <KnightTourPG level={level}/>
                 </Col>
                 <Col>
-                    Xin chào các bạn nhỏ
                     <Button>Open Board</Button>
+                    <br/><br/><br/><br/><br/>
+                    <Button>Right -></Button>
                 </Col>
                 <Col>
-                    <KnightTourBox level={gameLevel}/>
+                    <KnightTourBox level={level}/>
                 </Col>
             </Row>
         </Container>

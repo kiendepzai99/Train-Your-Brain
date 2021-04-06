@@ -1,7 +1,8 @@
 import React from "react";
 import KnightTourBox from "./KnightTourBox";
 import GameLevel from "../../constants/GameLevel";
-import {Col, Container, Form, Row} from "react-bootstrap";
+import {Button, Col, Container, Form, Row} from "react-bootstrap";
+import KnightTourPG from "./KnightTourPG";
 
 export default function KnightTour() {
     const [gameLevel, setGameLevel] = React.useState(GameLevel.EASY);
@@ -23,6 +24,17 @@ export default function KnightTour() {
                             </Form.Control>
                         </Form.Group>
                     </Form>
+                </Col>
+            </Row>
+            <Row className="justify-content-around">
+                <Col>
+                    <KnightTourPG level={gameLevel}/>
+                </Col>
+                <Col>
+                    Xin chào các bạn nhỏ
+                    <Button>Open Board</Button>
+                </Col>
+                <Col>
                     <KnightTourBox level={gameLevel}/>
                 </Col>
             </Row>

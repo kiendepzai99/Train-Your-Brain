@@ -71,7 +71,7 @@ export default function KnightTour() {
                     <KnightTourPG level={level}/>
                 </Col>
                 <Col>
-                    <Button onClick={handleCommit}>Commit</Button>
+                    <Button onClick={handleCommit} disabled={typingValue === null || typingValue === ''}>Commit</Button>
                     <br/><br/><br/><br/><br/>
                     <Button onClick={handleShowBoard}>{boardVisible ? 'Close Board' : 'Open Board'}</Button>
                 </Col>

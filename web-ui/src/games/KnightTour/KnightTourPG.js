@@ -3,11 +3,11 @@ import {
     DEFAULT_KNIGHT_TOUR_CELL,
     DEFAULT_KNIGHT_TOUR_SIZE,
     DEFAULT_SUDOKU_BOARD_CELL
-} from "../constants/BoardConstants";
-import boardFactory from "../service/BoardFactory";
-import knightTourService from "../service/KnightTourService";
-import Position from "../utils/Position";
-import canvasService from "../service/CanvasService";
+} from "../../constants/BoardConstants";
+import boardFactory from "../../service/BoardFactory";
+import knightTourService from "../../service/KnightTourService";
+import Position from "../../utils/Position";
+import canvasService from "../../service/CanvasService";
 
 export default function KnightTourPG(props) {
     const canvasRef = useRef();

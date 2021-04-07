@@ -3,12 +3,12 @@ import {
     DEFAULT_KNIGHT_TOUR_CELL,
     DEFAULT_KNIGHT_TOUR_SIZE,
     DEFAULT_SUDOKU_BOARD_CELL
-} from "../constants/BoardConstants";
-import boardFactory from "../service/BoardFactory";
-import knightTourService from "../service/KnightTourService";
-import {loadBKnight} from "../service/ImageLoader";
-import Point from "../utils/Point";
-import Position from "../utils/Position";
+} from "../../constants/BoardConstants";
+import boardFactory from "../../service/BoardFactory";
+import knightTourService from "../../service/KnightTourService";
+import {loadBKnight} from "../../service/ImageLoader";
+import Point from "../../utils/Point";
+import Position from "../../utils/Position";
 
 export default class KnightTourBox extends React.Component {
     constructor(props) {

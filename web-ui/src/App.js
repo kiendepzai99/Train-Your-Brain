@@ -2,9 +2,9 @@ import {Route, Switch} from "react-router";
 import Home from "./component/Home";
 import {BrowserRouter} from "react-router-dom";
 import NotFound from "./component/error/NotFound";
-import KnightTour from "./games/KnightTour";
+import KnightTour from "./games/KnightTour/KnightTour";
 import React from "react";
-import Sudoku from "./games/Sudoku";
+import Sudoku from "./games/Sudoku/Sudoku";
 import {Provider} from "react-redux";
 import store from "./store/store";
 

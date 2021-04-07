@@ -1,7 +1,7 @@
 import {Col, Container, Row} from "react-bootstrap";
 import SudokuBox from "./SudokuBox";
 import React from "react";
-import LevelBox from "../component/LevelBox";
+import LevelBox from "../../component/LevelBox";
 import {useSelector} from "react-redux";
 
 export default function Sudoku() {

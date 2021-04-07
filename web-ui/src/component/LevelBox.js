@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {Button, Col, Form, InputGroup} from "react-bootstrap";
 import GameLevel from "../constants/GameLevel";
 import {useDispatch, useSelector} from "react-redux";
+import KnightTourAction from "../store/action/KnightTourAction";
 
 export default function LevelBox() {
     const [localLevel, setLocalLevel] = useState(GameLevel.EASY)
@@ -17,10 +18,8 @@ export default function LevelBox() {
 
     const handleUpdateLevel = () => {
         const action = {
-            type: 'test',
-            payload: {
-                level: localLevel
-            }
+            type: KnightTourAction.changeLevel,
+            payload: localLevel
         }
         dispatch(action)
     }

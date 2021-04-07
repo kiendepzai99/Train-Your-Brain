@@ -2,11 +2,11 @@ import {Route, Switch} from "react-router";
 import Home from "./component/Home";
 import {BrowserRouter} from "react-router-dom";
 import NotFound from "./component/error/NotFound";
-import KnightTour from "./component/games/KnightTour";
+import KnightTour from "./games/KnightTour";
 import React from "react";
-import Sudoku from "./component/games/Sudoku";
+import Sudoku from "./games/Sudoku";
 import {Provider} from "react-redux";
-import store from "./store";
+import store from "./store/store";
 
 function App() {
     return (

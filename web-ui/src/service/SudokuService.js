@@ -15,15 +15,6 @@ const displayBoard = (ctx, boardStatus) => {
     })
 }
 
-const drawPickingCell = (ctx, position) => {
-    if (position != null) {
-        const xFrom = position.col * (CELL_SIZE + 1) + LINE_WIDTH;
-        const yFrom = position.row * (CELL_SIZE + 1) + LINE_WIDTH;
-        ctx.fillStyle = 'lightgrey';
-        ctx.fillRect(xFrom + LINE_WIDTH, yFrom + LINE_WIDTH, CELL_SIZE - LINE_WIDTH, CELL_SIZE - LINE_WIDTH);
-    }
-}
-
 const drawConflict = (ctx, conflictPositions) => {
     conflictPositions.forEach(position => {
         const xFrom = position.col * (CELL_SIZE + 1) + LINE_WIDTH;
@@ -35,7 +26,6 @@ const drawConflict = (ctx, conflictPositions) => {
 
 const sudokuService = {
     displayBoard,
-    drawPickingCell,
     drawConflict
 }
 

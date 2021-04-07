@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {DEFAULT_SUDOKU_BOARD_CELL, DEFAULT_SUDOKU_BOARD_SIZE} from "../../constants/BoardConstants";
-import boardFactory from "../../service/BoardFactory";
-import sudokuService from "../../service/SudokuService";
-import {mockBoardStatus} from "../../mockData";
-import Item from "../../utils/Item";
-import Position from "../../utils/Position";
-import canvasService from "../../service/CanvasService";
+import {DEFAULT_SUDOKU_BOARD_CELL, DEFAULT_SUDOKU_BOARD_SIZE} from "../constants/BoardConstants";
+import boardFactory from "../service/BoardFactory";
+import sudokuService from "../service/SudokuService";
+import {mockBoardStatus} from "../mockData";
+import Item from "../utils/Item";
+import Position from "../utils/Position";
+import canvasService from "../service/CanvasService";
 
 export default function SudokuBox(props) {
     const canvasRef = useRef();
@@ -19,7 +19,7 @@ export default function SudokuBox(props) {
 
         boardFactory.clearBoard(canvas);
         boardFactory.getSudokuBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
-        sudokuService.drawPickingCell(ctx, pickingPosition);
+        canvasService.fillCurrentCell(ctx, pickingPosition, 'lightGrey');
         sudokuService.drawConflict(ctx, conflictPositions);
         if (boardStatus != null) {
             sudokuService.displayBoard(ctx, boardStatus);

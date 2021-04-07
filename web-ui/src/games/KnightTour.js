@@ -3,7 +3,7 @@ import KnightTourBox from "./KnightTourBox";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import KnightTourPG from "./KnightTourPG";
 import {useSelector} from "react-redux";
-import LevelBox from "../LevelBox";
+import LevelBox from "../component/LevelBox";
 
 export default function KnightTour() {
     const level = useSelector(state => {

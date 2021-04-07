@@ -56,14 +56,15 @@ const findMovablePositions = (knightPosition, boardSize, excludedPositions) => {
         movablePositions.push(new Position(x + 1, y + 2));
     }
 
-    movablePositions.forEach(movable => {
-        excludedPositions.forEach(excluded => {
-            if (movable.compareTo(excluded)) {
-                const index = movablePositions.indexOf(movable);
-                movablePositions.splice(index, 1);
-            }
+    if (excludedPositions !== undefined && excludedPositions != null)
+        movablePositions.forEach(movable => {
+            excludedPositions.forEach(excluded => {
+                if (movable.compareTo(excluded)) {
+                    const index = movablePositions.indexOf(movable);
+                    movablePositions.splice(index, 1);
+                }
+            })
         })
-    })
 
     return movablePositions;
 }

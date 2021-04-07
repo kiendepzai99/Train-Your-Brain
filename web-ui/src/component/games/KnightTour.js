@@ -10,8 +10,6 @@ export default function KnightTour() {
         return state.games.KnightTour.level;
     })
 
-    console.log(level);
-
     return (
         <Container>
             <Row>

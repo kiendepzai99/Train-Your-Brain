@@ -1,4 +1,5 @@
 import Item from "./utils/Item";
+import GameLevel from "./constants/GameLevel";
 
 export function mockGameInfo(textId) {
     return {
@@ -38,17 +39,31 @@ export function mockTrainers() {
     ]
 }
 
-export function mockBoardStatus() {
-    const array = [
-        [0, 0, 0, 9, 0, 2, 7, 3, 8],
+export function mockBoardStatus(level) {
+    let array;
+    if (level === GameLevel.EASY)
+        array = [
+            [0, 0, 0, 9, 0, 2, 7, 3, 8],
+            [0, 6, 0, 0, 0, 5, 0, 0, 9],
+            [8, 2, 9, 3, 0, 0, 6, 0, 1],
+            [0, 0, 1, 0, 0, 6, 0, 8, 2],
+            [0, 9, 3, 0, 1, 0, 4, 0, 5],
+            [0, 8, 0, 7, 0, 0, 9, 1, 0],
+            [9, 0, 0, 0, 0, 7, 0, 0, 0],
+            [0, 3, 8, 6, 0, 0, 5, 0, 0],
+            [0, 0, 0, 5, 0, 1, 8, 9, 4]
+        ]
+
+    else array = [
+        [0, 0, 0, 9, 0, 2, 7, 3, 0],
         [0, 6, 0, 0, 0, 5, 0, 0, 9],
-        [8, 2, 9, 3, 0, 0, 6, 0, 1],
+        [8, 0, 9, 3, 0, 0, 6, 0, 1],
         [0, 0, 1, 0, 0, 6, 0, 8, 2],
-        [0, 9, 3, 0, 1, 0, 4, 0, 5],
-        [0, 8, 0, 7, 0, 0, 9, 1, 0],
+        [0, 9, 0, 0, 1, 0, 4, 0, 5],
+        [0, 8, 0, 7, 0, 0, 0, 1, 0],
         [9, 0, 0, 0, 0, 7, 0, 0, 0],
         [0, 3, 8, 6, 0, 0, 5, 0, 0],
-        [0, 0, 0, 5, 0, 1, 8, 9, 4]
+        [0, 0, 0, 0, 0, 1, 8, 9, 0]
     ]
 
     const result = [];

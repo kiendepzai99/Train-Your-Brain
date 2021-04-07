@@ -1,64 +1,54 @@
-import React from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {DEFAULT_SUDOKU_BOARD_CELL, DEFAULT_SUDOKU_BOARD_SIZE} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 import sudokuService from "../../service/SudokuService";
 import {mockBoardStatus} from "../../mockData";
-import Point from "../../utils/Point";
 import Item from "../../utils/Item";
 import Position from "../../utils/Position";
+import canvasService from "../../service/CanvasService";
 
-export default class SudokuBox extends React.Component {
-    constructor(props) {
-        super(props);
+export default function SudokuBox(props) {
+    const canvasRef = useRef();
+    const [boardStatus, setBoardStatus] = useState(null);
+    const [pickingPosition, setPickingPosition] = useState(null);
+    const [conflictPositions, setConflictPositions] = useState([]);
 
-        this.canvasRef = React.createRef();
-
-        this.state = {
-            boardStatus: null,
-            pickingPosition: null,
-            conflictPositions: []
-        }
-    }
-
-    drawBoard = () => {
-        const canvas = this.canvasRef.current;
+    const drawBoard = useCallback(() => {
+        const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
 
         boardFactory.clearBoard(canvas);
         boardFactory.getSudokuBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
-        sudokuService.drawPickingCell(ctx, this.state.pickingPosition);
-        sudokuService.drawConflict(ctx, this.state.conflictPositions);
-        if (this.state.boardStatus != null) {
-            sudokuService.displayBoard(ctx, this.state.boardStatus);
+        sudokuService.drawPickingCell(ctx, pickingPosition);
+        sudokuService.drawConflict(ctx, conflictPositions);
+        if (boardStatus != null) {
+            sudokuService.displayBoard(ctx, boardStatus);
         }
+    }, [boardStatus, conflictPositions, pickingPosition])
+
+    const handleMouseOver = () => {
+        canvasRef.current.style.cursor = "pointer";
     }
 
-    handleMouseOver = () => {
-        this.canvasRef.current.style.cursor = "pointer";
-    }
-
-    handlePressKey = (event) => {
+    const handlePressKey = (event) => {
         console.log(event.key);
         const key = Number(event.key);
         if (!isNaN(key) && event.key != null && event.key !== ' ') {
-            const pickingPosition = this.state.pickingPosition;
             if (pickingPosition != null) {
                 const [row, col] = [pickingPosition.row, pickingPosition.col];
-                const item = this.state.boardStatus[row][col];
+                const item = boardStatus[row][col];
                 if (item.editable) {
-                    const newBoardStatus = [...this.state.boardStatus];
+                    const newBoardStatus = [...boardStatus];
                     newBoardStatus[row][col] = new Item(key, true);
-                    this.setState({
-                        boardStatus: newBoardStatus
-                    })
+                    setBoardStatus(newBoardStatus)
 
-                    this.processCheck(newBoardStatus, pickingPosition);
+                    processCheck(newBoardStatus, pickingPosition);
                 }
             }
         }
     }
 
-    processCheck = (boardStatus, position) => {
+    const processCheck = (boardStatus, position) => {
         const [row, col] = [position.row, position.col];
         const currentItem = boardStatus[row][col];
         const conflictPositions = [];
@@ -78,64 +68,41 @@ export default class SudokuBox extends React.Component {
         if (conflictPositions.length === 1) {
             conflictPositions.splice(0, 1);
         }
-
-        this.setState({
-            conflictPositions: conflictPositions
-        })
+        setConflictPositions(conflictPositions)
     }
 
-    handleMove = (event) => {
-        const canvas = this.canvasRef.current;
-        const ctx = canvas.getContext('2d');
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        const point = new Point(x, y);
-        const xy = point.toPosition();
-        console.log(xy);
-
+    const handleMove = (event) => {
+        const canvas = canvasRef.current;
+        const xy = canvasService.getPosition(canvas, event);
         if (xy == null) return;
 
-        const pickingPosition = this.state.pickingPosition;
         if (pickingPosition != null) {
             if (xy.compareTo(pickingPosition)) {
-                this.setState({
-                    pickingPosition: null
-                })
+                setPickingPosition(null)
             } else {
-                this.setState({
-                    pickingPosition: xy
-                })
+                setPickingPosition(xy)
             }
         } else {
-            this.setState({
-                pickingPosition: xy
-            })
+            setPickingPosition(xy)
         }
     }
+    useEffect(() => {
+        setBoardStatus(mockBoardStatus(props.level))
+    }, [props.level])
 
-    componentDidMount() {
-        this.drawBoard();
-        this.setState({
-            boardStatus: mockBoardStatus()
-        })
-    }
+    useEffect(() => {
+        drawBoard()
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.drawBoard();
-    }
+    }, [drawBoard])
 
-    render() {
-        return (
-            <canvas ref={this.canvasRef}
-                    tabIndex="1"
-                    width={DEFAULT_SUDOKU_BOARD_SIZE}
-                    height={DEFAULT_SUDOKU_BOARD_SIZE}
-                    onClick={this.handleMove}
-                    onMouseOver={this.handleMouseOver}
-                    onKeyPress={this.handlePressKey}
-            />
-        )
-    }
+    return (
+        <canvas ref={canvasRef}
+                tabIndex="1"
+                width={DEFAULT_SUDOKU_BOARD_SIZE}
+                height={DEFAULT_SUDOKU_BOARD_SIZE}
+                onClick={handleMove}
+                onMouseOver={handleMouseOver}
+                onKeyPress={handlePressKey}
+        />
+    )
 }

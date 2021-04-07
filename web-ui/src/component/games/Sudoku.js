@@ -1,27 +1,22 @@
-import {Col, Container, Form, Row} from "react-bootstrap";
+import {Col, Container, Row} from "react-bootstrap";
 import SudokuBox from "./SudokuBox";
-import GameLevel from "../../constants/GameLevel";
 import React from "react";
+import LevelBox from "../LevelBox";
+import {useSelector} from "react-redux";
 
 export default function Sudoku() {
+    const level = useSelector(state => {
+        return state.games.KnightTour.level;
+    })
+
     return (
         <Container>
             <Row>
+                <LevelBox/>
+            </Row>
+            <Row>
                 <Col>
-                    <Form>
-                        <Form.Group>
-                            <Form.Label>
-                                Level
-                            </Form.Label>
-                            <Form.Control as="select">
-                                <option>{GameLevel.EASY}</option>
-                                <option>{GameLevel.MEDIUM}</option>
-                                <option>{GameLevel.HARD}</option>
-                                <option>{GameLevel.EXPERT}</option>
-                            </Form.Control>
-                        </Form.Group>
-                    </Form>
-                    <SudokuBox level={GameLevel.EASY}/>
+                    <SudokuBox level={level}/>
                 </Col>
             </Row>
         </Container>

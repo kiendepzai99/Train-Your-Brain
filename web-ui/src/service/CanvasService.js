@@ -13,7 +13,7 @@ const getPosition = (canvas, event, isDebug = false) => {
     return xy;
 }
 
-const fillCurrentCell = (ctx, position, color = 'red') => {
+const fillCell = (ctx, position, color = 'red') => {
     if (position !== undefined && position !== null) {
         const xFrom = position.col * (CELL_SIZE + 1) + LINE_WIDTH;
         const yFrom = position.row * (CELL_SIZE + 1) + LINE_WIDTH;
@@ -42,7 +42,7 @@ const drawCellValue = (ctx, position, value, color = 'red') => {
 
 const canvasService = {
     getPosition,
-    fillCurrentCell,
+    fillCell,
     drawCellValue
 }
 

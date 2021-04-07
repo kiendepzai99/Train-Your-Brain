@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {
     DEFAULT_KNIGHT_TOUR_CELL,
     DEFAULT_KNIGHT_TOUR_SIZE,
@@ -6,16 +6,31 @@ import {
 } from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 import knightTourService from "../../service/KnightTourService";
-import Position from "../../utils/Position";
 import canvasService from "../../service/CanvasService";
+import {useDispatch, useSelector} from "react-redux";
+import KnightTourAction from "../../store/action/KnightTourAction";
 
 export default function KnightTourPG(props) {
     const canvasRef = useRef();
-    const [currentPosition, setCurrentPosition] = useState(new Position(1, 4));
-    const [pickingPosition, setPickingPosition] = useState(null);
-    const [currentValue, setCurrentValue] = useState(33);
-    const [movablePositions, setMovablePositions] = useState(knightTourService.findMovablePositions(currentPosition, DEFAULT_KNIGHT_TOUR_CELL));
-    const [typingValue, setTypingValue] = useState(null);
+
+    // Stored state
+    const knightPosition = useSelector(state => {
+        return state.games.KnightTour.knightPosition;
+    })
+    const knightValue = useSelector(state => {
+        return state.games.KnightTour.knightValue;
+    })
+    const typingValue = useSelector(state => {
+        return state.games.KnightTour.typingValue;
+    })
+    const pickingPosition = useSelector(state => {
+        return state.games.KnightTour.pickingPosition
+    })
+    const movablePositions = useSelector(state => {
+        return state.games.KnightTour.movablePositions
+    })
+
+    const dispatch = useDispatch();
 
     const drawBoard = () => {
         const canvas = canvasRef.current;
@@ -24,9 +39,9 @@ export default function KnightTourPG(props) {
         boardFactory.clearBoard(canvas);
         boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
 
-        canvasService.fillCurrentCell(ctx, currentPosition, 'Aqua');
-        canvasService.fillCurrentCell(ctx, pickingPosition, 'Aquamarine');
-        canvasService.drawCellValue(ctx, currentPosition, currentValue);
+        canvasService.fillCell(ctx, knightPosition, 'Aqua');
+        canvasService.fillCell(ctx, pickingPosition, 'Aquamarine');
+        canvasService.drawCellValue(ctx, knightPosition, knightValue);
         if (typingValue != null) {
             canvasService.drawCellValue(ctx, pickingPosition, typingValue);
 
@@ -45,22 +60,33 @@ export default function KnightTourPG(props) {
 
         movablePositions.forEach(position => {
             if (xy.compareTo(position)) {
-                setPickingPosition(xy);
-                setMovablePositions(knightTourService.findMovablePositions(currentPosition, DEFAULT_KNIGHT_TOUR_CELL, [xy]));
+                dispatch({
+                    type: KnightTourAction.updateMovablePositions,
+                    payload: knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL, [xy])
+                })
+                dispatch({
+                    type: KnightTourAction.updatePickingPosition,
+                    payload: xy
+                })
             }
         })
     }
 
     const handleKeyDown = (event) => {
-        console.log(event.key);
         const key = Number(event.key);
         if (event.key === 'Backspace') {
-            setTypingValue((typingValue + '').slice(0, -1));
+            dispatch({
+                type: KnightTourAction.updateTypingValue,
+                payload: (typingValue + '').slice(0, -1)
+            })
         }
         if (!isNaN(key) && event.key != null && event.key !== ' ') {
             // Limit only 3 digits
             if (pickingPosition != null && typingValue < 100) {
-                setTypingValue((typingValue == null ? "" : typingValue) + "" + key);
+                dispatch({
+                    type: KnightTourAction.updateTypingValue,
+                    payload: (typingValue == null ? "" : typingValue) + "" + key
+                })
             }
         }
 
@@ -68,7 +94,7 @@ export default function KnightTourPG(props) {
 
     useEffect((
         drawBoard
-    ), [currentPosition, currentValue, movablePositions, pickingPosition, typingValue]);
+    ), [knightPosition, knightValue, movablePositions, pickingPosition, typingValue]);
 
     return (
         <canvas ref={canvasRef}

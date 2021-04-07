@@ -19,7 +19,7 @@ export default function SudokuBox(props) {
 
         boardFactory.clearBoard(canvas);
         boardFactory.getSudokuBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
-        canvasService.fillCurrentCell(ctx, pickingPosition, 'lightGrey');
+        canvasService.fillCell(ctx, pickingPosition, 'lightGrey');
         sudokuService.drawConflict(ctx, conflictPositions);
         if (boardStatus != null) {
             sudokuService.displayBoard(ctx, boardStatus);

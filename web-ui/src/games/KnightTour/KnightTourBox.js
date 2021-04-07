@@ -1,109 +1,51 @@
-import React from "react";
-import {
-    DEFAULT_KNIGHT_TOUR_CELL,
-    DEFAULT_KNIGHT_TOUR_SIZE,
-    DEFAULT_SUDOKU_BOARD_CELL
-} from "../../constants/BoardConstants";
+import React, {useCallback, useEffect, useRef} from "react";
+import {DEFAULT_KNIGHT_TOUR_SIZE, DEFAULT_SUDOKU_BOARD_CELL} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
+import {useSelector} from "react-redux";
 import knightTourService from "../../service/KnightTourService";
-import {loadBKnight} from "../../service/ImageLoader";
-import Point from "../../utils/Point";
-import Position from "../../utils/Position";
+import canvasService from "../../service/CanvasService";
 
-export default class KnightTourBox extends React.Component {
-    constructor(props) {
-        super(props);
+export default function KnightTourBox(props) {
+    const canvasRef = useRef();
 
-        this.canvasRef = React.createRef();
-        this.state = {
-            knightPosition: new Position(1, 4),
-            isFocus: false,
-            pickingPosition: null,
-            movablePositions: [],
-            movedPositions: [],
-            boardStatus: null
-        }
-    }
+    // Stored state
+    const knightPosition = useSelector(state => {
+        return state.games.KnightTour.knightPosition;
+    })
 
-    drawBoard = () => {
-        const canvas = this.canvasRef.current;
+    const boardStatus = props.boardStatus;
+
+    const drawBoard = useCallback(() => {
+        const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
 
+        boardFactory.clearBoard(canvas);
+        boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
 
-        const knightImage = loadBKnight();
-        knightImage.onload = () => {
-            boardFactory.clearBoard(canvas);
-            boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
-            knightTourService.drawKnightImage(ctx, this.state.knightPosition);
-            if (this.state.isFocus) {
-                knightTourService.drawMovablePositions(ctx, this.state.movablePositions);
-            }
-            knightTourService.drawMovedPositions(ctx, this.state.movedPositions);
-        }
+        canvasService.fillCell(ctx, knightPosition, 'Aqua');
+        knightTourService.drawBoardStatus(ctx, boardStatus);
+    }, [boardStatus, knightPosition])
+
+    const clearBoard = () => {
+        const canvas = canvasRef.current;
+        boardFactory.clearBoard(canvas);
     }
 
-    handleMouseOver = () => {
-        this.canvasRef.current.style.cursor = "pointer";
+    const handleMouseOver = () => {
+        canvasRef.current.style.cursor = "pointer";
     }
+    useEffect(() => {
+        if (props.visible) {
+            drawBoard()
+        } else clearBoard()
+    }, [drawBoard, props.visible])
 
-    handleMove = (event) => {
-        const canvas = this.canvasRef.current;
-        const rect = canvas.getBoundingClientRect();
-        const x = event.clientX - rect.left;
-        const y = event.clientY - rect.top;
-
-        const point = new Point(x, y);
-        const xy = point.toPosition();
-        console.log(xy);
-        if (xy == null) return;
-
-        if (this.state.isFocus) {
-            if (xy.compareTo(this.state.pickingPosition)) {
-                this.setState({
-                    isFocus: false,
-                    pickingPosition: []
-                })
-            } else if (knightTourService.movable(this.state.knightPosition, xy)) {
-                const movedPositions = [...this.state.movedPositions];
-                movedPositions.push(this.state.knightPosition);
-                this.setState({
-                    knightPosition: xy,
-                    isFocus: false,
-                    pickingPosition: null,
-                    movablePositions: [],
-                    movedPositions: movedPositions
-                })
-            }
-        } else {
-            const knightPosition = this.state.knightPosition;
-            if (!xy.compareTo(knightPosition)) return;
-            this.setState({
-                isFocus: true,
-                pickingPosition: xy,
-                movablePositions: knightTourService.findMovablePositions(knightPosition,
-                    DEFAULT_KNIGHT_TOUR_CELL, this.state.movedPositions)
-            })
-            console.log(knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL, this.state.movedPositions));
-        }
-    }
-
-    componentDidMount() {
-        this.drawBoard();
-    }
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.drawBoard();
-    }
-
-    render() {
-        return (
-            <canvas ref={this.canvasRef}
-                    className={"border border-danger"}
-                    width={DEFAULT_KNIGHT_TOUR_SIZE}
-                    height={DEFAULT_KNIGHT_TOUR_SIZE}
-                    onClick={this.handleMove}
-                    onMouseOver={this.handleMouseOver}
-            />
-        )
-    }
+    return (
+        <canvas ref={canvasRef}
+                className={"border border-danger"}
+                width={DEFAULT_KNIGHT_TOUR_SIZE}
+                height={DEFAULT_KNIGHT_TOUR_SIZE}
+                onMouseOver={handleMouseOver}
+        />
+    )
 }

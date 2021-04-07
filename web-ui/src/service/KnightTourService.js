@@ -1,14 +1,6 @@
 import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
-import {loadBKnight} from "./ImageLoader";
 import Position from "../utils/Position";
-
-const drawKnightImage = (ctx, position) => {
-    ctx.drawImage(loadBKnight(),
-        (CELL_SIZE + LINE_WIDTH) * position.col + 2 * LINE_WIDTH,
-        (CELL_SIZE + LINE_WIDTH) * position.row + 2 * LINE_WIDTH,
-        CELL_SIZE - LINE_WIDTH,
-        CELL_SIZE - LINE_WIDTH);
-}
+import canvasService from "./CanvasService";
 
 const drawMovablePositions = (ctx, movablePositions) => {
     movablePositions.forEach((position) => {
@@ -74,30 +66,22 @@ const movable = (from, to) => {
     return Math.abs(from.row - to.row) === 1 && Math.abs(from.col - to.col) === 2;
 }
 
-const drawMovedPositions = (ctx, movedPositions) => {
-    movedPositions.forEach((position) => {
-        const [row, col] = position.toRowCol();
-
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = 'green';
-
-        ctx.beginPath();
-        ctx.arc(col * (CELL_SIZE + LINE_WIDTH) + CELL_SIZE / 2,
-            row * (CELL_SIZE + LINE_WIDTH) + CELL_SIZE / 2,
-            5,
-            0,
-            Math.PI * 2
-        )
-        ctx.stroke();
-    })
+const drawBoardStatus = (ctx, boardStatus) => {
+    if (boardStatus !== null && boardStatus !== undefined)
+        boardStatus.forEach((row, i) => {
+            row.forEach((item, j) => {
+                if (!isNaN(item) && item !== null && item > 0) {
+                    canvasService.drawCellValue(ctx, new Position(i, j), item);
+                }
+            })
+        })
 }
 
 const knightTourService = {
-    drawKnightImage,
     drawMovablePositions,
     findMovablePositions,
     movable,
-    drawMovedPositions
+    drawBoardStatus
 }
 
 export default knightTourService;

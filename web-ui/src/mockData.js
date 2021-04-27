@@ -11,7 +11,7 @@ export function mockGameInfo(textId) {
 }
 
 export function mockGames() {
-    return [mockGameInfo("Sudoku"), mockGameInfo("Knight-tour"), mockGameInfo("Ton"), mockGameInfo("random-game"), mockGameInfo("test-game")]
+    return [mockGameInfo("Sudoku"), mockGameInfo("Knight-tour"), mockGameInfo("Ton"), mockGameInfo("N-puzzle"), mockGameInfo("test-game")]
 }
 
 export function mockTrainers() {
@@ -39,7 +39,7 @@ export function mockTrainers() {
     ]
 }
 
-export function mockBoardStatus(level) {
+export function mockSudokuBoard(level) {
     let array;
     if (level === GameLevel.EASY)
         array = [
@@ -88,4 +88,19 @@ export function mockKnightBoardStatus() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
+}
+
+export function mockNPuzzleBoard(size) {
+    const arr = []
+    let value = 1;
+    for (let i = 0; i < size; i++) {
+        const col = []
+        for (let j = 0; j < size; j++) {
+            col[j] = value;
+            value++;
+        }
+        arr[i] = col
+    }
+    arr[size - 1][size - 1] = 0
+    return arr
 }

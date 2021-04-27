@@ -1,5 +1,6 @@
 import Point from "../utils/Point";
 import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
+import Position from "../utils/Position";
 
 const getPosition = (canvas, event, isDebug = false) => {
     const rect = canvas.getBoundingClientRect();
@@ -13,30 +14,26 @@ const getPosition = (canvas, event, isDebug = false) => {
     return xy;
 }
 
-const fillCell = (ctx, position, color = 'red') => {
+const fillCell = (ctx, position, cellSize, color = 'red') => {
     if (position !== undefined && position !== null) {
-        const xFrom = position.col * (CELL_SIZE + 1) + LINE_WIDTH;
-        const yFrom = position.row * (CELL_SIZE + 1) + LINE_WIDTH;
+        const xFrom = position.col * (cellSize + 1) + LINE_WIDTH;
+        const yFrom = position.row * (cellSize + 1) + LINE_WIDTH;
         ctx.fillStyle = color;
-        ctx.fillRect(xFrom + LINE_WIDTH, yFrom + LINE_WIDTH, CELL_SIZE - LINE_WIDTH, CELL_SIZE - LINE_WIDTH);
+        ctx.fillRect(xFrom + LINE_WIDTH, yFrom + LINE_WIDTH, cellSize - LINE_WIDTH, cellSize - LINE_WIDTH);
     }
 }
 
-const drawCellValue = (ctx, position, value, color = 'red') => {
+const drawCellValue = (ctx, position, cellSize, value, color = 'red',) => {
     if (position !== undefined && position !== null) {
-        ctx.font = '30px Comic Sans MS';
+        const fontSize = cellSize / 2;
+        ctx.font = fontSize + 'px Comic Sans MS';
         ctx.fillStyle = color;
 
-        let offset
-        const valueLength = (value + '').length;
-        if (valueLength === 1) {
-            offset = 20
-        } else if (valueLength === 2) {
-            offset = 13
-        } else offset = 5
+        // TODO: Improve offSet calculate method
+        let offset = fontSize / 2
         ctx.fillText(value,
-            (CELL_SIZE + LINE_WIDTH) * position.col + LINE_WIDTH + offset,
-            (CELL_SIZE + LINE_WIDTH) * position.row + LINE_WIDTH + 40)
+            (cellSize + LINE_WIDTH) * position.col + LINE_WIDTH + offset,
+            (cellSize + LINE_WIDTH) * (position.row + 1) + LINE_WIDTH - offset)
     }
 }
 

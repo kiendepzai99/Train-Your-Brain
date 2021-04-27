@@ -8,6 +8,7 @@ import Sudoku from "./games/Sudoku/Sudoku";
 import {Provider} from "react-redux";
 import store from "./store/store";
 import Ton from "./games/ton/Ton";
+import NPuzzle from "./games/NPuzzle/NPuzzle";
 
 function App() {
     return (
@@ -18,6 +19,7 @@ function App() {
                     <Route exact path={"/sudoku"} component={Sudoku}/>
                     <Route exact path={"/knight-tour"} component={KnightTour}/>
                     <Route exact path={"/ton"} component={Ton}/>
+                    <Route exact path="/n-puzzle" component={NPuzzle}/>
                     <Route path="/" component={NotFound}/>
                 </Switch>
             </BrowserRouter>

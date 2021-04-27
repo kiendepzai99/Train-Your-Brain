@@ -41,6 +41,8 @@ export default function KnightTourPG(props) {
 
         canvasService.fillCell(ctx, knightPosition, 'Aqua');
         canvasService.fillCell(ctx, pickingPosition, 'Aquamarine');
+
+
         canvasService.drawCellValue(ctx, knightPosition, knightValue);
         if (typingValue != null) {
             canvasService.drawCellValue(ctx, pickingPosition, typingValue);

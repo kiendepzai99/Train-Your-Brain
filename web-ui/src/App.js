@@ -19,7 +19,9 @@ function App() {
                     <Route exact path={"/sudoku"} component={Sudoku}/>
                     <Route exact path={"/knight-tour"} component={KnightTour}/>
                     <Route exact path={"/ton"} component={Ton}/>
-                    <Route exact path="/n-puzzle" component={NPuzzle}/>
+                    <Route exact path="/n-puzzle">
+                        <NPuzzle gameId="n-puzzle"/>
+                    </Route>
                     <Route path="/" component={NotFound}/>
                 </Switch>
             </BrowserRouter>

@@ -1,6 +1,5 @@
 import Point from "../utils/Point";
-import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
-import Position from "../utils/Position";
+import {LINE_WIDTH} from "../constants/BoardConstants";
 
 const getPosition = (canvas, event, isDebug = false) => {
     const rect = canvas.getBoundingClientRect();

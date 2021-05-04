@@ -1,10 +1,10 @@
-import React, {useCallback} from "react";
+import React from "react";
 import {Button, Col, Container, Dropdown, Row} from "react-bootstrap";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import GameLevel from "../../constants/GameLevel";
 import {useDispatch, useSelector} from "react-redux";
 import NPuzzleAction from "../../store/action/NPuzzleAction";
-import {mockNPuzzleBoard, mockNPuzzleBoardGoal} from "../../mockData";
+import nPuzzleService from "../../service/NPuzzleService";
 
 export default function NPuzzleBox(props) {
     const level = useSelector(state => {
@@ -32,41 +32,18 @@ export default function NPuzzleBox(props) {
     const handleLevelChange = (event) => {
         const newLevel = event.target.innerText
         if (newLevel !== level) {
-            let cellNumber;
-            if (newLevel === GameLevel.EASY) cellNumber = 3;
-            else if (newLevel === GameLevel.MEDIUM) cellNumber = 4;
-            else if (newLevel === GameLevel.HARD) cellNumber = 6;
-            else cellNumber = 8;
-
             const action = {
                 type: NPuzzleAction.changeLevel,
-                payload: {
-                    level: level,
-                    cellNumber: cellNumber,
-                    boardGoal: mockNPuzzleBoardGoal(cellNumber),
-                    boardStatusInit: mockNPuzzleBoard(cellNumber),
-                    boardStatus: mockNPuzzleBoard(cellNumber),
-                    moveAllowed: 10,
-                    moveLeft: 10
-                }
+                payload: nPuzzleService.getGame(newLevel)
             }
             dispatch(action)
         }
     }
 
     const handleNewGame = () => {
-        // TODO: Update new Game
         const action = {
             type: NPuzzleAction.newGame,
-            payload: {
-                level: level,
-                cellNumber: 3,
-                boardGoal: mockNPuzzleBoardGoal(3),
-                boardStatusInit: mockNPuzzleBoard(3),
-                boardStatus: mockNPuzzleBoard(3),
-                moveAllowed: 100,
-                moveLeft: 100
-            }
+            payload: nPuzzleService.getGame(level)
         }
         dispatch(action)
     }

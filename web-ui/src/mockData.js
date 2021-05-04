@@ -89,33 +89,3 @@ export function mockKnightBoardStatus() {
         [0, 0, 0, 0, 0, 0, 0, 0, 0]
     ]
 }
-
-export function mockNPuzzleBoard(size) {
-    const arr = []
-    let value = 1;
-    for (let i = 0; i < size; i++) {
-        const col = []
-        for (let j = 0; j < size; j++) {
-            col[j] = value;
-            value++;
-        }
-        arr[i] = col
-    }
-    arr[size - 1][size - 1] = 0
-    return arr
-}
-
-export function mockNPuzzleBoardGoal(size) {
-    const arr = []
-    let value = 1;
-    for (let i = 0; i < size; i++) {
-        const col = []
-        for (let j = 0; j < size; j++) {
-            col[j] = value;
-            value++;
-        }
-        arr[i] = col
-    }
-    arr[size - 1][size - 1] = 0
-    return arr
-}

@@ -2,12 +2,12 @@ import React, {useCallback, useEffect, useRef} from "react";
 import boardFactory from "../../service/BoardFactory";
 import {DEFAULT_BOARD_SIZE} from "../../constants/BoardConstants";
 import nPuzzleService from "../../service/NPuzzleService";
-import Position from "../../utils/Position";
 import {Col, Container, Row} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
 import NPuzzleAction from "../../store/action/NPuzzleAction";
+import NPuzzleGame from "./NPuzzleGame";
 
-export default function NPuzzlePG(props) {
+export default function NPuzzlePG() {
     const dispatch = useDispatch();
     const canvasRef = useRef();
     const boardSize = DEFAULT_BOARD_SIZE;
@@ -30,19 +30,7 @@ export default function NPuzzlePG(props) {
         }
         dispatch(action)
     }, [dispatch])
-    const calculateCurrentHole = useCallback(() => {
-        let result = null;
-        boardStatus.forEach((row, i) => {
-            if (result != null) return;
-            row.forEach((item, j) => {
-                if (item === 0) {
-                    result = new Position(i, j);
-                }
-            })
-        })
-        return result;
-    }, [boardStatus])
-    const currentHole = calculateCurrentHole();
+    const currentHole = NPuzzleGame.getEmptyPosition(boardStatus)
 
     const drawBoard = useCallback(() => {
         const canvas = canvasRef.current;

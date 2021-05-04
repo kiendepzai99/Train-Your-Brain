@@ -1,17 +1,9 @@
 import GameLevel from "../../constants/GameLevel";
 import NPuzzleAction from "../action/NPuzzleAction";
-import {mockNPuzzleBoard, mockNPuzzleBoardGoal} from "../../mockData";
 import {cloneArray} from "../../utils/ArrayUtils";
+import nPuzzleService from "../../service/NPuzzleService";
 
-const initState = {
-    level: GameLevel.EASY,
-    cellNumber: 3,
-    boardGoal: mockNPuzzleBoardGoal(3),
-    boardStatusInit: mockNPuzzleBoard(3),
-    boardStatus: mockNPuzzleBoard(3),
-    moveAllowed: 10,
-    moveLeft: 10
-}
+const initState = nPuzzleService.getGame(GameLevel.EASY)
 
 export default function nPuzzleReducer(state = initState, action) {
     switch (action.type) {

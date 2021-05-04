@@ -6,3 +6,11 @@ export function cloneArray(array) {
 
     return newArray;
 }
+
+export function swapPosition(array, first, second) {
+    const [firstRow, firstCol] = first.toRowCol()
+    const [secondRow, secondCol] = second.toRowCol()
+    const temp = array[firstRow][firstCol]
+    array[firstRow][firstCol] = array[secondRow][secondCol]
+    array[secondRow][secondCol] = temp;
+}

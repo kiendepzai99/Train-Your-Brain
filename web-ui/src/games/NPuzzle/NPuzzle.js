@@ -3,16 +3,15 @@ import React from "react";
 import NPuzzlePG from "./NPuzzlePG";
 import NPuzzleBox from "./NPuzzleBox";
 import NPuzzleInfo from "./NPuzzleInfo";
+import Header from "../../component/Header";
 
 export default function NPuzzle() {
     return (
         <Container fluid>
-            <Row className="justify-content-around border-bottom border-top p-2">
-                <a className={"text-normal"} href={"/"}><h3 className="entry-title">BrainCamp</h3></a>
-            </Row>
+            <Header/>
             <Row className="mt-4">
                 <Container>
-                    <Row className="justify-content-around ">
+                    <Row className="justify-content-around">
                         <Col>
                             <NPuzzlePG/>
                         </Col>

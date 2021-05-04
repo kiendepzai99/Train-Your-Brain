@@ -1,32 +1,47 @@
-import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
+import {LINE_WIDTH, resolveCellSize} from "../constants/BoardConstants";
+import SudokuGame from "../games/Sudoku/SudokuGame";
+import {mockSudokuBoard} from "../mockData";
+import canvasService from "./CanvasService";
+import Position from "../utils/Position";
 
-const displayBoard = (ctx, boardStatus) => {
+const displayBoard = (ctx, boardStatus, boardSize, cellNumber) => {
     ctx.font = '30px Comic Sans MS';
 
-    const offset = 20;
-    boardStatus.forEach((row, i) => {
-        row.forEach((item, j) => {
-            const value = item.value;
-            if (value !== 0) {
-                ctx.fillStyle = item.editable ? 'red' : 'gray';
-                ctx.fillText(value, (CELL_SIZE + LINE_WIDTH) * j + LINE_WIDTH + offset, (CELL_SIZE + LINE_WIDTH) * (i + 1) + LINE_WIDTH - offset)
-            }
+    const cellSize = resolveCellSize(boardSize, cellNumber)
+
+    if (boardStatus !== null && boardStatus !== undefined)
+        boardStatus.forEach((row, i) => {
+            row.forEach((item, j) => {
+                const value = item.value
+                if (!isNaN(value) && value !== null && value > 0) {
+                    const color = item.editable ? 'red' : 'gray'
+                    canvasService.drawCellValue(ctx, new Position(i, j), cellSize, value, color);
+                }
+            })
         })
+}
+
+const drawConflict = (ctx, conflictPositions, boardSize, cellNumber, lineWidth = LINE_WIDTH) => {
+    const cellSize = resolveCellSize(boardSize, cellNumber)
+
+    conflictPositions.forEach(position => {
+        const xFrom = position.col * (cellSize + 1) + lineWidth;
+        const yFrom = position.row * (cellSize + 1) + lineWidth;
+        ctx.fillStyle = 'yellow';
+        ctx.fillRect(xFrom + lineWidth, yFrom + lineWidth, cellSize - lineWidth, cellSize - lineWidth);
     })
 }
 
-const drawConflict = (ctx, conflictPositions) => {
-    conflictPositions.forEach(position => {
-        const xFrom = position.col * (CELL_SIZE + 1) + LINE_WIDTH;
-        const yFrom = position.row * (CELL_SIZE + 1) + LINE_WIDTH;
-        ctx.fillStyle = 'yellow';
-        ctx.fillRect(xFrom + LINE_WIDTH, yFrom + LINE_WIDTH, CELL_SIZE - LINE_WIDTH, CELL_SIZE - LINE_WIDTH);
-    })
+const getGame = (level) => {
+    const boardStatus = mockSudokuBoard(level)
+
+    return new SudokuGame(level, boardStatus)
 }
 
 const sudokuService = {
     displayBoard,
-    drawConflict
+    drawConflict,
+    getGame
 }
 
 export default sudokuService;

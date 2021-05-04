@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import NPuzzleAction from "../../store/action/NPuzzleAction";
 import nPuzzleService from "../../service/NPuzzleService";
 
-export default function NPuzzleBox(props) {
+export default function NPuzzleBox() {
     const level = useSelector(state => {
         return state.games.NPuzzle.level
     })

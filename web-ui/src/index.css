@@ -31,3 +31,7 @@ code {
 .text-normal:hover {
     text-decoration: none;
 }
+
+.btn-circle {
+    border-radius: 3rem !important;
+}

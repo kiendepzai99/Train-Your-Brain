@@ -36,28 +36,34 @@ const getBoardGoal = (size) => {
 
 // TODO: Update algorithm to shuffle board
 const shuffleBoard = (boardStatus) => {
+    const startPosition = NPuzzleGame.getEmptyPosition(boardStatus)
     let emptyPosition = NPuzzleGame.getEmptyPosition(boardStatus)
 
     const cellNumber = boardStatus.length
-    let random
-    for (let i = 0; i < cellNumber * 2; i++) {
-        random = Math.floor(Math.random() * 4)
+
+    let shuffled = false;
+    while (!emptyPosition.compareTo(startPosition) || !shuffled) {
+        const random = Math.floor(Math.random() * 4)
         if (random === 0 && emptyPosition.row > 0) {
             const toPosition = emptyPosition.getUp()
             swapPosition(boardStatus, emptyPosition, toPosition)
             emptyPosition = toPosition;
+            shuffled = true;
         } else if (random === 1 && emptyPosition.row < cellNumber - 1) {
             const toPosition = emptyPosition.getDown()
             swapPosition(boardStatus, emptyPosition, toPosition)
             emptyPosition = toPosition;
+            shuffled = true;
         } else if (random === 2 && emptyPosition.col > 0) {
             const toPosition = emptyPosition.getLeft()
             swapPosition(boardStatus, emptyPosition, toPosition)
             emptyPosition = toPosition;
+            shuffled = true;
         } else if (random === 3 && emptyPosition.col < cellNumber - 1) {
             const toPosition = emptyPosition.getRight()
             swapPosition(boardStatus, emptyPosition, toPosition)
             emptyPosition = toPosition;
+            shuffled = true;
         }
     }
 }

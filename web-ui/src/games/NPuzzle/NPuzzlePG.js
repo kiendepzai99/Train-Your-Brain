@@ -64,9 +64,15 @@ export default function NPuzzlePG(props) {
         newBoardStatus[currentRow][currentCol] = boardStatus[newRow][newCol]
         boardStatus[newRow][newCol] = 0;
         setBoardStatus(newBoardStatus)
+
+        dispatch({
+            type: NPuzzleAction.updateMoveLeft,
+            payload: moveLeft - 1
+        })
     }
 
     const handleOnKeyDown = (event) => {
+        if (moveLeft === 0) return;
         const key = event.key;
         // Left
         if (key === 'a') {
@@ -99,13 +105,6 @@ export default function NPuzzlePG(props) {
             if (currentRow < cellNumber - 1) {
                 updateState(currentRow, currentCol, currentRow + 1, currentCol)
             }
-        }
-        if ('asdw'.includes(key)) {
-            const action = {
-                type: NPuzzleAction.updateMoveLeft,
-                payload: moveLeft - 1
-            }
-            dispatch(action)
         }
     }
 

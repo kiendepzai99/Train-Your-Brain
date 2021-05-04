@@ -6,7 +6,7 @@ export default function NPuzzleInfo() {
         <Container>
             <Row>
                 <Col>
-                    <h5 className="entry-title"><b>How to play</b></h5>
+                    <h5 className="entry-title">How to play</h5>
                     <p>The goal of N-Puzzle is move the pieces in the box to reach the target box</p>
                     <ul>
                         <li>Use <code>A</code>, <code>S</code>, <code>D</code>, <code>W</code> to move</li>

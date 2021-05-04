@@ -1,8 +1,11 @@
-import {CELL_SIZE, LINE_WIDTH} from "../constants/BoardConstants";
+import {LINE_WIDTH, resolveCellSize} from "../constants/BoardConstants";
 import Position from "../utils/Position";
 import canvasService from "./CanvasService";
+import KnightTourGame from "../games/KnightTour/KnightTourGame";
 
-const drawMovablePositions = (ctx, movablePositions) => {
+const drawMovablePositions = (ctx, boardSize, cellNumber, movablePositions, lineWidth = LINE_WIDTH) => {
+    const cellSize = resolveCellSize(boardSize, cellNumber)
+
     movablePositions.forEach((position) => {
         const [row, col] = position.toRowCol();
 
@@ -10,8 +13,8 @@ const drawMovablePositions = (ctx, movablePositions) => {
         ctx.strokeStyle = 'red';
 
         ctx.beginPath();
-        ctx.arc(col * (CELL_SIZE + LINE_WIDTH) + CELL_SIZE / 2,
-            row * (CELL_SIZE + LINE_WIDTH) + CELL_SIZE / 2,
+        ctx.arc(col * (cellSize + lineWidth) + cellSize / 2,
+            row * (cellSize + lineWidth) + cellSize / 2,
             5,
             0,
             Math.PI * 2
@@ -20,31 +23,31 @@ const drawMovablePositions = (ctx, movablePositions) => {
     })
 }
 
-const findMovablePositions = (knightPosition, boardSize, excludedPositions) => {
+const findMovablePositions = (knightPosition, cellNumber, excludedPositions) => {
     const [x, y] = knightPosition.toRowCol();
     const movablePositions = [];
     if (x - 2 >= 0 && y - 1 >= 0) {
         movablePositions.push(new Position(x - 2, y - 1));
     }
-    if (x - 2 >= 0 && y + 1 < boardSize) {
+    if (x - 2 >= 0 && y + 1 < cellNumber) {
         movablePositions.push(new Position(x - 2, y + 1));
     }
-    if (x + 2 < boardSize && y - 1 >= 0) {
+    if (x + 2 < cellNumber && y - 1 >= 0) {
         movablePositions.push(new Position(x + 2, y - 1));
     }
-    if (x + 2 < boardSize && y + 1 < boardSize) {
+    if (x + 2 < cellNumber && y + 1 < cellNumber) {
         movablePositions.push(new Position(x + 2, y + 1));
     }
     if (x - 1 >= 0 && y - 2 >= 0) {
         movablePositions.push(new Position(x - 1, y - 2));
     }
-    if (x - 1 >= 0 && y + 2 < boardSize) {
+    if (x - 1 >= 0 && y + 2 < cellNumber) {
         movablePositions.push(new Position(x - 1, y + 2));
     }
-    if (x + 1 < boardSize && y - 2 >= 0) {
+    if (x + 1 < cellNumber && y - 2 >= 0) {
         movablePositions.push(new Position(x + 1, y - 2));
     }
-    if (x + 1 < boardSize && y + 2 < boardSize) {
+    if (x + 1 < cellNumber && y + 2 < cellNumber) {
         movablePositions.push(new Position(x + 1, y + 2));
     }
 
@@ -66,22 +69,30 @@ const movable = (from, to) => {
     return Math.abs(from.row - to.row) === 1 && Math.abs(from.col - to.col) === 2;
 }
 
-const drawBoardStatus = (ctx, boardStatus) => {
+const drawBoardStatus = (ctx, boardStatus, boardSize, cellNumber) => {
+    const cellSize = resolveCellSize(boardSize, cellNumber)
+
     if (boardStatus !== null && boardStatus !== undefined)
         boardStatus.forEach((row, i) => {
             row.forEach((item, j) => {
                 if (!isNaN(item) && item !== null && item > 0) {
-                    canvasService.drawCellValue(ctx, new Position(i, j), item);
+                    canvasService.drawCellValue(ctx, new Position(i, j), cellSize, item);
                 }
             })
         })
+}
+
+const getGame = (level) => {
+    // TODO: Update this data
+    return new KnightTourGame(level, new Position(1, 3), 13)
 }
 
 const knightTourService = {
     drawMovablePositions,
     findMovablePositions,
     movable,
-    drawBoardStatus
+    drawBoardStatus,
+    getGame
 }
 
 export default knightTourService;

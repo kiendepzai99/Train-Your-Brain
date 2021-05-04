@@ -1,13 +1,13 @@
 import Point from "../utils/Point";
 import {LINE_WIDTH} from "../constants/BoardConstants";
 
-const getPosition = (canvas, event, isDebug = false) => {
+const getPosition = (canvas, event, boardSize, cellNumber, isDebug = false) => {
     const rect = canvas.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
     const point = new Point(x, y);
-    const xy = point.toPosition();
+    const xy = point.toPosition(boardSize, cellNumber);
     if (isDebug) console.log(xy);
 
     return xy;

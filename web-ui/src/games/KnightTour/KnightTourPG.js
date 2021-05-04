@@ -1,27 +1,29 @@
-import React, {useEffect, useRef} from "react";
-import {
-    DEFAULT_KNIGHT_TOUR_CELL,
-    DEFAULT_KNIGHT_TOUR_SIZE,
-    DEFAULT_SUDOKU_BOARD_CELL
-} from "../../constants/BoardConstants";
+import React, {useCallback, useEffect, useRef} from "react";
+import {DEFAULT_BOARD_SIZE, resolveCellSize} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 import knightTourService from "../../service/KnightTourService";
 import canvasService from "../../service/CanvasService";
 import {useDispatch, useSelector} from "react-redux";
 import KnightTourAction from "../../store/action/KnightTourAction";
+import {Col, Container, Row} from "react-bootstrap";
 
-export default function KnightTourPG(props) {
+export default function KnightTourPG() {
     const canvasRef = useRef();
+    const boardSize = DEFAULT_BOARD_SIZE;
 
     // Stored state
+    const cellNumber = useSelector(state => {
+        return state.games.KnightTour.cellNumber
+    })
+
     const knightPosition = useSelector(state => {
-        return state.games.KnightTour.knightPosition;
+        return state.games.KnightTour.knightPosition
     })
     const knightValue = useSelector(state => {
-        return state.games.KnightTour.knightValue;
+        return state.games.KnightTour.knightValue
     })
     const typingValue = useSelector(state => {
-        return state.games.KnightTour.typingValue;
+        return state.games.KnightTour.typingValue
     })
     const pickingPosition = useSelector(state => {
         return state.games.KnightTour.pickingPosition
@@ -32,24 +34,23 @@ export default function KnightTourPG(props) {
 
     const dispatch = useDispatch();
 
-    const drawBoard = () => {
+    const drawBoard = useCallback(() => {
         const canvas = canvasRef.current;
         const ctx = canvas.getContext('2d');
 
         boardFactory.clearBoard(canvas);
-        boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
+        boardFactory.getChessBoard(ctx, cellNumber, boardSize);
 
-        canvasService.fillCell(ctx, knightPosition, 'Aqua');
-        canvasService.fillCell(ctx, pickingPosition, 'Aquamarine');
+        const cellSize = resolveCellSize(boardSize, cellNumber)
+        canvasService.fillCell(ctx, knightPosition, cellSize, 'Aqua');
+        canvasService.fillCell(ctx, pickingPosition, cellSize, 'Aquamarine');
+        canvasService.drawCellValue(ctx, knightPosition, cellSize, knightValue);
 
-
-        canvasService.drawCellValue(ctx, knightPosition, knightValue);
         if (typingValue != null) {
-            canvasService.drawCellValue(ctx, pickingPosition, typingValue);
-
+            canvasService.drawCellValue(ctx, pickingPosition, cellSize, typingValue);
         }
-        knightTourService.drawMovablePositions(ctx, movablePositions);
-    }
+        knightTourService.drawMovablePositions(ctx, boardSize, cellNumber, movablePositions);
+    }, [boardSize, cellNumber, knightPosition, knightValue, movablePositions, pickingPosition, typingValue])
 
     const handleMouseOver = () => {
         canvasRef.current.style.cursor = "pointer";
@@ -57,14 +58,14 @@ export default function KnightTourPG(props) {
 
     const handleMouseClick = (event) => {
         const canvas = canvasRef.current;
-        const xy = canvasService.getPosition(canvas, event)
+        const xy = canvasService.getPosition(canvas, event, boardSize, cellNumber)
         if (xy == null) return;
 
         movablePositions.forEach(position => {
             if (xy.compareTo(position)) {
                 dispatch({
                     type: KnightTourAction.updateMovablePositions,
-                    payload: knightTourService.findMovablePositions(knightPosition, DEFAULT_KNIGHT_TOUR_CELL, [xy])
+                    payload: knightTourService.findMovablePositions(knightPosition, cellNumber, [xy])
                 })
                 dispatch({
                     type: KnightTourAction.updatePickingPosition,
@@ -94,19 +95,24 @@ export default function KnightTourPG(props) {
 
     }
 
-    useEffect((
-        drawBoard
-    ), [knightPosition, knightValue, movablePositions, pickingPosition, typingValue]);
+    useEffect(() => {
+        drawBoard()
+    }, [drawBoard]);
 
     return (
-        <canvas ref={canvasRef}
-                tabIndex="1"
-                className={"border border-danger"}
-                width={DEFAULT_KNIGHT_TOUR_SIZE}
-                height={DEFAULT_KNIGHT_TOUR_SIZE}
-                onClick={handleMouseClick}
-                onMouseOver={handleMouseOver}
-                onKeyDown={handleKeyDown}
-        />
+        <Container fluid>
+            <Row>
+                <Col>
+                    <canvas ref={canvasRef}
+                            tabIndex="1"
+                            width={boardSize}
+                            height={boardSize}
+                            onClick={handleMouseClick}
+                            onMouseOver={handleMouseOver}
+                            onKeyDown={handleKeyDown}
+                    />
+                </Col>
+            </Row>
+        </Container>
     )
 }

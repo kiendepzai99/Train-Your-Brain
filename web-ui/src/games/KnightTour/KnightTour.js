@@ -3,18 +3,13 @@ import KnightTourBox from "./KnightTourBox";
 import {Button, Col, Container, Row} from "react-bootstrap";
 import KnightTourPG from "./KnightTourPG";
 import {useDispatch, useSelector} from "react-redux";
-import LevelBox from "../../component/LevelBox";
 import KnightTourAction from "../../store/action/KnightTourAction";
 import knightTourService from "../../service/KnightTourService";
-import {DEFAULT_KNIGHT_TOUR_CELL} from "../../constants/BoardConstants";
 import Position from "../../utils/Position";
+import {cloneArray} from "../../utils/ArrayUtils";
 
 export default function KnightTour() {
     // Stored state
-    const level = useSelector(state => {
-        return state.games.KnightTour.level;
-    })
-
     const boardStatus = useSelector(state => {
         return state.games.KnightTour.boardStatus;
     })
@@ -23,6 +18,10 @@ export default function KnightTour() {
     })
     const typingValue = useSelector(state => {
         return state.games.KnightTour.typingValue;
+    })
+
+    const cellNumber = useSelector(state => {
+        return state.games.KnightTour.cellNumber
     })
 
     // Local state
@@ -37,13 +36,17 @@ export default function KnightTour() {
         })
         dispatch({
             type: KnightTourAction.updateMovablePositions,
-            payload: knightTourService.findMovablePositions(pickingPosition, DEFAULT_KNIGHT_TOUR_CELL)
+            payload: knightTourService.findMovablePositions(pickingPosition, cellNumber)
+        })
+        dispatch({
+            type: KnightTourAction.updateKnightValue,
+            payload: typingValue
         })
         dispatch({
             type: KnightTourAction.updateTypingValue,
             payload: null
         })
-        const newBoardStatus = [...boardStatus];
+        const newBoardStatus = cloneArray(boardStatus);
         newBoardStatus.forEach((row, i) => {
             row.forEach((item, j) => {
                 if (pickingPosition.compareTo(new Position(i, j))) {
@@ -62,20 +65,21 @@ export default function KnightTour() {
     }
 
     return (
-        <Container>
-            <Row>
-                <LevelBox/>
+        <Container fluid>
+            <Row className="justify-content-around border-bottom border-top p-2">
+                <a className={"text-normal"} href={"/"}><h3 className="entry-title">BrainCamp</h3></a>
             </Row>
-            <Row className="justify-content-around">
-                <Col>
-                    <KnightTourPG level={level}/>
+            <Row className={"justify-content-center mt-4"}>
+                <Col sm={5} className={"border"}>
+                    <KnightTourPG/>
                 </Col>
-                <Col>
+                <Col sm={1} className={"text-center border"}>
                     <Button onClick={handleCommit} disabled={typingValue === null || typingValue === ''}>Commit</Button>
                     <br/><br/><br/><br/><br/>
-                    <Button onClick={handleShowBoard}>{boardVisible ? 'Close Board' : 'Open Board'}</Button>
+                    <Button variant={"info"}
+                            onClick={handleShowBoard}>{boardVisible ? 'Close Board' : 'Open Board'}</Button>
                 </Col>
-                <Col>
+                <Col sm={5} className={"border"}>
                     <KnightTourBox visible={boardVisible} boardStatus={boardStatus}/>
                 </Col>
             </Row>

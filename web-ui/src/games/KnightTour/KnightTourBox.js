@@ -1,16 +1,22 @@
 import React, {useCallback, useEffect, useRef} from "react";
-import {DEFAULT_KNIGHT_TOUR_SIZE, DEFAULT_SUDOKU_BOARD_CELL} from "../../constants/BoardConstants";
+import {DEFAULT_BOARD_SIZE, resolveCellSize} from "../../constants/BoardConstants";
 import boardFactory from "../../service/BoardFactory";
 import {useSelector} from "react-redux";
 import knightTourService from "../../service/KnightTourService";
 import canvasService from "../../service/CanvasService";
+import {Col, Container, Row} from "react-bootstrap";
 
 export default function KnightTourBox(props) {
     const canvasRef = useRef();
+    const boardSize = DEFAULT_BOARD_SIZE
 
     // Stored state
     const knightPosition = useSelector(state => {
         return state.games.KnightTour.knightPosition;
+    })
+
+    const cellNumber = useSelector(state => {
+        return state.games.KnightTour.cellNumber;
     })
 
     const boardStatus = props.boardStatus;
@@ -20,11 +26,12 @@ export default function KnightTourBox(props) {
         const ctx = canvas.getContext('2d');
 
         boardFactory.clearBoard(canvas);
-        boardFactory.getChessBoard(ctx, DEFAULT_SUDOKU_BOARD_CELL);
+        boardFactory.getChessBoard(ctx, cellNumber);
 
-        canvasService.fillCell(ctx, knightPosition, 'Aqua');
-        knightTourService.drawBoardStatus(ctx, boardStatus);
-    }, [boardStatus, knightPosition])
+        const cellSize = resolveCellSize(boardSize, cellNumber)
+        canvasService.fillCell(ctx, knightPosition, cellSize, 'Aqua');
+        knightTourService.drawBoardStatus(ctx, boardStatus, boardSize, cellNumber);
+    }, [boardSize, boardStatus, cellNumber, knightPosition])
 
     const clearBoard = () => {
         const canvas = canvasRef.current;
@@ -41,11 +48,16 @@ export default function KnightTourBox(props) {
     }, [drawBoard, props.visible])
 
     return (
-        <canvas ref={canvasRef}
-                className={"border border-danger"}
-                width={DEFAULT_KNIGHT_TOUR_SIZE}
-                height={DEFAULT_KNIGHT_TOUR_SIZE}
-                onMouseOver={handleMouseOver}
-        />
+        <Container>
+            <Row>
+                <Col>
+                    <canvas ref={canvasRef}
+                            width={boardSize}
+                            height={boardSize}
+                            onMouseOver={handleMouseOver}
+                    />
+                </Col>
+            </Row>
+        </Container>
     )
 }

@@ -27,3 +27,7 @@ code {
     font-weight: bold;
     color: #344861
 }
+
+.text-normal:hover {
+    text-decoration: none;
+}

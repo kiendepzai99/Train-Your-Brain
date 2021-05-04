@@ -23,13 +23,13 @@ const getSudokuBoard = (ctx, cellNumber, boardSize = DEFAULT_BOARD_SIZE) => {
     }
 }
 
-const getChessBoard = (ctx, size, boardSize = DEFAULT_BOARD_SIZE) => {
-    for (let i = 0; i <= size; i++) {
+const getChessBoard = (ctx, cellNumber, boardSize = DEFAULT_BOARD_SIZE) => {
+    for (let i = 0; i <= cellNumber; i++) {
         ctx.beginPath();
         ctx.lineWidth = LINE_WIDTH;
         ctx.strokeStyle = 'black';
 
-        drawBoard(ctx, size, i, boardSize);
+        drawBoard(ctx, cellNumber, i, boardSize);
     }
 }
 
